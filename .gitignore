@@ -1,0 +1,15 @@
+# Environment
+.env
+.env.*
+!.env.example
+.venv/
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+.DS_Store
+
+# Data and outputs: datasets come from their official sources, experiment
+# outputs from the Hugging Face Hub (see docs/DATASETS.md)
+data/
+results/
+outputs/

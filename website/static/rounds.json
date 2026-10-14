@@ -1,0 +1,676 @@
+{
+ "image_id": "eva__18116",
+ "panel": [
+  {
+   "who": "Man, 26-29",
+   "art": "competent",
+   "photo": "beginner",
+   "card": "a male aged 26-29, education level: senior high school; art experience: competent; photography experience: beginner. Big-Five personality scores (2-10 scale): extraversion 4/10 (low), agreeableness 10/10 (high), neuroticism 4/10 (low), openness to experience 5/10 (moderate), conscientiousness 8/10 (high)."
+  },
+  {
+   "who": "Woman, 26-29",
+   "art": "beginner",
+   "photo": "beginner",
+   "card": "a female aged 26-29, education level: technical secondary school; art experience: beginner; photography experience: beginner. Big-Five personality scores (2-10 scale): extraversion 6/10 (moderate), agreeableness 7/10 (moderate), neuroticism 5/10 (moderate), openness to experience 8/10 (high), conscientiousness 7/10 (moderate)."
+  },
+  {
+   "who": "Woman, 35-40",
+   "art": "competent",
+   "photo": "beginner",
+   "card": "a female aged 35-40, education level: university; art experience: competent; photography experience: beginner. Big-Five personality scores (2-10 scale): extraversion 7/10 (moderate), agreeableness 9/10 (high), neuroticism 3/10 (low), openness to experience 9/10 (high), conscientiousness 9/10 (high)."
+  },
+  {
+   "who": "Woman, 30-34",
+   "art": "proficient",
+   "photo": "proficient",
+   "card": "a female aged 30-34, education level: university; art experience: proficient; photography experience: proficient. Big-Five personality scores (2-10 scale): extraversion 5/10 (moderate), agreeableness 9/10 (high), neuroticism 4/10 (low), openness to experience 7/10 (moderate), conscientiousness 9/10 (high)."
+  },
+  {
+   "who": "Man, 35-40",
+   "art": "expert",
+   "photo": "proficient",
+   "card": "a male aged 35-40, education level: senior high school; art experience: expert; photography experience: proficient. Big-Five personality scores (2-10 scale): extraversion 4/10 (low), agreeableness 8/10 (high), neuroticism 6/10 (moderate), openness to experience 8/10 (high), conscientiousness 6/10 (moderate)."
+  },
+  {
+   "who": "Woman, 35-40",
+   "art": "competent",
+   "photo": "beginner",
+   "card": "a female aged 35-40, education level: university; art experience: competent; photography experience: beginner. Big-Five personality scores (2-10 scale): extraversion 8/10 (high), agreeableness 9/10 (high), neuroticism 3/10 (low), openness to experience 7/10 (moderate), conscientiousness 9/10 (high)."
+  },
+  {
+   "who": "Man, 35-40",
+   "art": "beginner",
+   "photo": "beginner",
+   "card": "a male aged 35-40, education level: junior college; art experience: beginner; photography experience: beginner. Big-Five personality scores (2-10 scale): extraversion 6/10 (moderate), agreeableness 8/10 (high), neuroticism 5/10 (moderate), openness to experience 6/10 (moderate), conscientiousness 7/10 (moderate)."
+  },
+  {
+   "who": "Man, 18-21",
+   "art": "beginner",
+   "photo": "beginner",
+   "card": "a male aged 18-21, education level: senior high school; art experience: beginner; photography experience: beginner. Big-Five personality scores (2-10 scale): extraversion 10/10 (high), agreeableness 8/10 (high), neuroticism 2/10 (low), openness to experience 8/10 (high), conscientiousness 6/10 (moderate)."
+  },
+  {
+   "who": "Woman, 22-25",
+   "art": "beginner",
+   "photo": "competent",
+   "card": "a female aged 22-25, education level: university; art experience: beginner; photography experience: competent. Big-Five personality scores (2-10 scale): extraversion 6/10 (moderate), agreeableness 6/10 (moderate), neuroticism 4/10 (low), openness to experience 8/10 (high), conscientiousness 8/10 (high)."
+  },
+  {
+   "who": "Woman, 18-21",
+   "art": "beginner",
+   "photo": "beginner",
+   "card": "a female aged 18-21, education level: junior college; art experience: beginner; photography experience: beginner. Big-Five personality scores (2-10 scale): extraversion 10/10 (high), agreeableness 8/10 (high), neuroticism 8/10 (high), openness to experience 6/10 (moderate), conscientiousness 8/10 (high)."
+  }
+ ],
+ "rounds": [
+  {
+   "round": 0,
+   "image": "rounds/eva__18116/round_00.jpg",
+   "score": 5.04,
+   "similarity": 1.0,
+   "committed": true,
+   "instruction": "",
+   "reactions": []
+  },
+  {
+   "round": 1,
+   "image": "rounds/eva__18116/round_01.jpg",
+   "score": 5.249,
+   "similarity": 0.935,
+   "committed": true,
+   "instruction": "Replace the green bench with a neutral-colored bench to better match the muted tones of",
+   "reactions": [
+    {
+     "persona": 0,
+     "score": 60.0,
+     "complaint": "The green bench could be replaced with a more neutral color to better match the muted tones of the building and the overall scene."
+    },
+    {
+     "persona": 1,
+     "score": 60.0,
+     "complaint": "The green bench could be replaced with a more neutral color to better match the muted tones of the building and the overall scene."
+    },
+    {
+     "persona": 2,
+     "score": 60.0,
+     "complaint": "The green bench could be replaced with a more neutral color to better match the muted tones of the building and the overall scene."
+    },
+    {
+     "persona": 3,
+     "score": 60.0,
+     "complaint": "The green bench could be replaced with a more neutral color to better match the muted tones of the building and the overall scene."
+    },
+    {
+     "persona": 4,
+     "score": 60.0,
+     "complaint": "The green bench could be replaced with a more neutral color to better match the muted tones of the building and the overall scene."
+    },
+    {
+     "persona": 5,
+     "score": 60.0,
+     "complaint": "The green bench could be replaced with a more neutral color to better match the muted tones of the building and the overall scene."
+    },
+    {
+     "persona": 6,
+     "score": 60.0,
+     "complaint": "The green bench could be replaced with a more neutral color to better match the muted tones of the building and the overall scene."
+    },
+    {
+     "persona": 7,
+     "score": 60.0,
+     "complaint": "The green bench could be replaced with a more neutral color to better match the muted tones of the building and the overall scene."
+    },
+    {
+     "persona": 8,
+     "score": 60.0,
+     "complaint": "The green bench could be replaced with a more neutral color to better match the muted tones of the building and the overall scene."
+    },
+    {
+     "persona": 9,
+     "score": 60.0,
+     "complaint": "The green bench could be replaced with a more neutral color to better match the muted tones of the building and the overall scene."
+    }
+   ]
+  },
+  {
+   "round": 2,
+   "image": "rounds/eva__18116/round_02.jpg",
+   "score": 5.371,
+   "similarity": 0.918,
+   "committed": true,
+   "instruction": "Replace the white bench with a vibrant, colorful bench to add visual interest and contrast",
+   "reactions": [
+    {
+     "persona": 0,
+     "score": 60.0,
+     "complaint": "The bench could be more vibrant to add a pop of color and contrast with the dull background."
+    },
+    {
+     "persona": 1,
+     "score": 60.0,
+     "complaint": "The bench could be more vibrant to add a pop of color and contrast with the dull wall."
+    },
+    {
+     "persona": 2,
+     "score": 60.0,
+     "complaint": "The bench could be more vibrant to add a pop of color and contrast with the muted background."
+    },
+    {
+     "persona": 3,
+     "score": 70.0,
+     "complaint": "The bench could be more vibrant to add a pop of color and contrast with the muted tones of the building."
+    },
+    {
+     "persona": 4,
+     "score": 60.0,
+     "complaint": "The white bench could be replaced with a more colorful or artistic piece to add visual interest."
+    },
+    {
+     "persona": 5,
+     "score": 60.0,
+     "complaint": "The bench could be more vibrant to add a pop of color and contrast with the muted background."
+    },
+    {
+     "persona": 6,
+     "score": 60.0,
+     "complaint": "The bench could be more vibrant to add a pop of color and contrast with the dull background."
+    },
+    {
+     "persona": 7,
+     "score": 60.0,
+     "complaint": "The bench could be more vibrant to add a pop of color and contrast with the dull background."
+    },
+    {
+     "persona": 8,
+     "score": 60.0,
+     "complaint": "The bench could be more vibrant to add a pop of color and contrast with the muted background."
+    },
+    {
+     "persona": 9,
+     "score": 60.0,
+     "complaint": "The bench could be more vibrant to add a pop of color and contrast with the dull background."
+    }
+   ]
+  },
+  {
+   "round": 3,
+   "image": "rounds/eva__18116/round_02.jpg",
+   "score": 5.371,
+   "similarity": 0.918,
+   "committed": false,
+   "instruction": "Adjust the pink bench to a more muted, earthy color to complement the surroundings while",
+   "reactions": [
+    {
+     "persona": 0,
+     "score": 60.0,
+     "complaint": "The pink bench is a bit too bright and distracting. A more muted color would blend better with the surroundings."
+    },
+    {
+     "persona": 1,
+     "score": 60.0,
+     "complaint": "The pink bench could be more vibrant to stand out more against the dull background."
+    },
+    {
+     "persona": 2,
+     "score": 70.0,
+     "complaint": "The pink bench could be more vibrant to stand out more against the dull background."
+    },
+    {
+     "persona": 3,
+     "score": 70.0,
+     "complaint": "The pink bench could be more vibrant to stand out more against the dull background."
+    },
+    {
+     "persona": 4,
+     "score": 70.0,
+     "complaint": "The pink bench could be more vibrant to stand out more against the dull background."
+    },
+    {
+     "persona": 5,
+     "score": 70.0,
+     "complaint": "The pink bench could be more vibrant to stand out more against the dull background."
+    },
+    {
+     "persona": 6,
+     "score": 60.0,
+     "complaint": "The pink bench is a bit too bright and distracting. A more muted color would blend better with the surroundings."
+    },
+    {
+     "persona": 7,
+     "score": 60.0,
+     "complaint": "The pink bench is a bit too bright and distracting. A more muted color would blend better with the surroundings."
+    },
+    {
+     "persona": 8,
+     "score": 70.0,
+     "complaint": "The pink bench could be more vibrant to stand out more against the dull background."
+    },
+    {
+     "persona": 9,
+     "score": 60.0,
+     "complaint": "The pink bench is a bit too bright and distracting. A more muted color would blend better with the surroundings."
+    }
+   ]
+  },
+  {
+   "round": 4,
+   "image": "rounds/eva__18116/round_02.jpg",
+   "score": 5.371,
+   "similarity": 0.918,
+   "committed": false,
+   "instruction": "Adjust the pink bench to a more muted, earthy color to complement the surroundings while",
+   "reactions": [
+    {
+     "persona": 0,
+     "score": 60.0,
+     "complaint": "The pink bench is a bit too bright and distracting. A more muted color would blend better with the surroundings."
+    },
+    {
+     "persona": 1,
+     "score": 60.0,
+     "complaint": "The pink bench could be more vibrant to stand out more against the dull background."
+    },
+    {
+     "persona": 2,
+     "score": 70.0,
+     "complaint": "The pink bench could be more vibrant to stand out more against the dull background."
+    },
+    {
+     "persona": 3,
+     "score": 70.0,
+     "complaint": "The pink bench could be more vibrant to stand out more against the dull background."
+    },
+    {
+     "persona": 4,
+     "score": 70.0,
+     "complaint": "The pink bench could be more vibrant to stand out more against the dull background."
+    },
+    {
+     "persona": 5,
+     "score": 70.0,
+     "complaint": "The pink bench could be more vibrant to stand out more against the dull background."
+    },
+    {
+     "persona": 6,
+     "score": 60.0,
+     "complaint": "The pink bench is a bit too bright and distracting. A more muted color would blend better with the surroundings."
+    },
+    {
+     "persona": 7,
+     "score": 60.0,
+     "complaint": "The pink bench is a bit too bright and distracting. A more muted color would blend better with the surroundings."
+    },
+    {
+     "persona": 8,
+     "score": 70.0,
+     "complaint": "The pink bench could be more vibrant to stand out more against the dull background."
+    },
+    {
+     "persona": 9,
+     "score": 60.0,
+     "complaint": "The pink bench is a bit too bright and distracting. A more muted color would blend better with the surroundings."
+    }
+   ]
+  },
+  {
+   "round": 5,
+   "image": "rounds/eva__18116/round_02.jpg",
+   "score": 5.371,
+   "similarity": 0.918,
+   "committed": false,
+   "instruction": "Adjust the pink bench to a more muted, earthy color to complement the surroundings while",
+   "reactions": [
+    {
+     "persona": 0,
+     "score": 60.0,
+     "complaint": "The pink bench is a bit too bright and distracting. A more muted color would blend better with the surroundings."
+    },
+    {
+     "persona": 1,
+     "score": 60.0,
+     "complaint": "The pink bench could be more vibrant to stand out more against the dull background."
+    },
+    {
+     "persona": 2,
+     "score": 70.0,
+     "complaint": "The pink bench could be more vibrant to stand out more against the dull background."
+    },
+    {
+     "persona": 3,
+     "score": 70.0,
+     "complaint": "The pink bench could be more vibrant to stand out more against the dull background."
+    },
+    {
+     "persona": 4,
+     "score": 70.0,
+     "complaint": "The pink bench could be more vibrant to stand out more against the dull background."
+    },
+    {
+     "persona": 5,
+     "score": 70.0,
+     "complaint": "The pink bench could be more vibrant to stand out more against the dull background."
+    },
+    {
+     "persona": 6,
+     "score": 60.0,
+     "complaint": "The pink bench is a bit too bright and distracting. A more muted color would blend better with the surroundings."
+    },
+    {
+     "persona": 7,
+     "score": 60.0,
+     "complaint": "The pink bench is a bit too bright and distracting. A more muted color would blend better with the surroundings."
+    },
+    {
+     "persona": 8,
+     "score": 70.0,
+     "complaint": "The pink bench could be more vibrant to stand out more against the dull background."
+    },
+    {
+     "persona": 9,
+     "score": 60.0,
+     "complaint": "The pink bench is a bit too bright and distracting. A more muted color would blend better with the surroundings."
+    }
+   ]
+  },
+  {
+   "round": 6,
+   "image": "rounds/eva__18116/round_02.jpg",
+   "score": 5.371,
+   "similarity": 0.918,
+   "committed": false,
+   "instruction": "Adjust the pink bench to a more muted, earthy color to complement the surroundings while",
+   "reactions": [
+    {
+     "persona": 0,
+     "score": 60.0,
+     "complaint": "The pink bench could be more vibrant to stand out more against the dull background."
+    },
+    {
+     "persona": 1,
+     "score": 60.0,
+     "complaint": "The pink bench is a bit too bright and distracting. A more muted color would blend better with the surroundings."
+    },
+    {
+     "persona": 2,
+     "score": 70.0,
+     "complaint": "The pink bench could be more vibrant to stand out more against the dull background."
+    },
+    {
+     "persona": 3,
+     "score": 70.0,
+     "complaint": "The pink bench could be more vibrant to stand out more against the dull background."
+    },
+    {
+     "persona": 4,
+     "score": 70.0,
+     "complaint": "The pink bench could be more vibrant to stand out more against the dull background."
+    },
+    {
+     "persona": 5,
+     "score": 70.0,
+     "complaint": "The pink bench could be more vibrant to stand out more against the dull background."
+    },
+    {
+     "persona": 6,
+     "score": 60.0,
+     "complaint": "The pink bench is a bit too bright and distracting. A more muted color would blend better with the surroundings."
+    },
+    {
+     "persona": 7,
+     "score": 60.0,
+     "complaint": "The pink bench is a bit too bright and distracting. A more muted color would blend better with the surroundings."
+    },
+    {
+     "persona": 8,
+     "score": 70.0,
+     "complaint": "The pink bench could be more vibrant to stand out more against the dull background."
+    },
+    {
+     "persona": 9,
+     "score": 60.0,
+     "complaint": "The pink bench could be more vibrant to stand out more against the dull background."
+    }
+   ]
+  },
+  {
+   "round": 7,
+   "image": "rounds/eva__18116/round_02.jpg",
+   "score": 5.371,
+   "similarity": 0.918,
+   "committed": false,
+   "instruction": "Adjust the pink bench to a more muted, earthy color to complement the surroundings while",
+   "reactions": [
+    {
+     "persona": 0,
+     "score": 60.0,
+     "complaint": "The pink bench is a bit too bright and distracting. A more muted color would blend better with the surroundings."
+    },
+    {
+     "persona": 1,
+     "score": 60.0,
+     "complaint": "The pink bench could be more vibrant to stand out more against the dull background."
+    },
+    {
+     "persona": 2,
+     "score": 70.0,
+     "complaint": "The pink bench could be more vibrant to stand out more against the dull background."
+    },
+    {
+     "persona": 3,
+     "score": 70.0,
+     "complaint": "The pink bench could be more vibrant to stand out more against the dull background."
+    },
+    {
+     "persona": 4,
+     "score": 70.0,
+     "complaint": "The pink bench could be more vibrant to stand out more against the dull background."
+    },
+    {
+     "persona": 5,
+     "score": 70.0,
+     "complaint": "The pink bench could be more vibrant to stand out more against the dull background."
+    },
+    {
+     "persona": 6,
+     "score": 60.0,
+     "complaint": "The pink bench is a bit too bright and distracting. A more muted color would blend better with the surroundings."
+    },
+    {
+     "persona": 7,
+     "score": 60.0,
+     "complaint": "The pink bench is a bit too bright and distracting. A more muted color would blend better with the surroundings."
+    },
+    {
+     "persona": 8,
+     "score": 70.0,
+     "complaint": "The pink bench could be more vibrant to stand out more against the dull background."
+    },
+    {
+     "persona": 9,
+     "score": 60.0,
+     "complaint": "The pink bench is a bit too bright and distracting. A more muted color would blend better with the surroundings."
+    }
+   ]
+  },
+  {
+   "round": 8,
+   "image": "rounds/eva__18116/round_02.jpg",
+   "score": 5.371,
+   "similarity": 0.918,
+   "committed": false,
+   "instruction": "Adjust the pink bench to a more muted, earthy color to complement the surroundings while",
+   "reactions": [
+    {
+     "persona": 0,
+     "score": 60.0,
+     "complaint": "The pink bench is a bit too bright and distracting. A more muted color would blend better with the surroundings."
+    },
+    {
+     "persona": 1,
+     "score": 60.0,
+     "complaint": "The pink bench could be more vibrant to stand out more against the dull background."
+    },
+    {
+     "persona": 2,
+     "score": 70.0,
+     "complaint": "The pink bench could be more vibrant to stand out more against the dull background."
+    },
+    {
+     "persona": 3,
+     "score": 70.0,
+     "complaint": "The pink bench could be more vibrant to stand out more against the dull background."
+    },
+    {
+     "persona": 4,
+     "score": 70.0,
+     "complaint": "The pink bench could be replaced with a more neutral color to better match the weathered building."
+    },
+    {
+     "persona": 5,
+     "score": 70.0,
+     "complaint": "The pink bench could be more vibrant to stand out more against the dull background."
+    },
+    {
+     "persona": 6,
+     "score": 60.0,
+     "complaint": "The pink bench is a bit too bright and distracting. A more muted color would blend better with the surroundings."
+    },
+    {
+     "persona": 7,
+     "score": 60.0,
+     "complaint": "The pink bench is a bit too bright and distracting. A more muted color would blend better with the surroundings."
+    },
+    {
+     "persona": 8,
+     "score": 70.0,
+     "complaint": "The pink bench could be more vibrant to stand out more against the dull background."
+    },
+    {
+     "persona": 9,
+     "score": 60.0,
+     "complaint": "The pink bench is a bit too bright and distracting. A more muted color would blend better with the surroundings."
+    }
+   ]
+  },
+  {
+   "round": 9,
+   "image": "rounds/eva__18116/round_09.jpg",
+   "score": 5.382,
+   "similarity": 0.919,
+   "committed": true,
+   "instruction": "Adjust the pink bench to a more muted, earthy color to complement the surroundings while",
+   "reactions": [
+    {
+     "persona": 0,
+     "score": 60.0,
+     "complaint": "The pink bench is a bit too bright and distracting. A more muted color would blend better with the surroundings."
+    },
+    {
+     "persona": 1,
+     "score": 60.0,
+     "complaint": "The pink bench could be more vibrant to stand out more against the dull background."
+    },
+    {
+     "persona": 2,
+     "score": 70.0,
+     "complaint": "The pink bench could be more vibrant to stand out more against the dull background."
+    },
+    {
+     "persona": 3,
+     "score": 70.0,
+     "complaint": "The pink bench could be more vibrant to stand out more against the dull background."
+    },
+    {
+     "persona": 4,
+     "score": 70.0,
+     "complaint": "The pink bench could be replaced with a more neutral color to better match the weathered building."
+    },
+    {
+     "persona": 5,
+     "score": 70.0,
+     "complaint": "The pink bench could be more vibrant to stand out more against the dull background."
+    },
+    {
+     "persona": 6,
+     "score": 60.0,
+     "complaint": "The pink bench is a bit too bright and distracting. A more muted color would blend better with the surroundings."
+    },
+    {
+     "persona": 7,
+     "score": 60.0,
+     "complaint": "The pink bench is a bit too bright and distracting. A more muted color would blend better with the surroundings."
+    },
+    {
+     "persona": 8,
+     "score": 70.0,
+     "complaint": "The pink bench could be more vibrant to stand out more against the dull background."
+    },
+    {
+     "persona": 9,
+     "score": 60.0,
+     "complaint": "The pink bench is a bit too bright and distracting. A more muted color would blend better with the surroundings."
+    }
+   ]
+  },
+  {
+   "round": 10,
+   "image": "rounds/eva__18116/round_10.jpg",
+   "score": 5.541,
+   "similarity": 0.907,
+   "committed": true,
+   "instruction": "Vividly color the red bench to stand out more against the muted background.",
+   "reactions": [
+    {
+     "persona": 0,
+     "score": 60.0,
+     "complaint": "The red bench could be more vibrant to stand out more against the dull background."
+    },
+    {
+     "persona": 1,
+     "score": 60.0,
+     "complaint": "The red bench could be more vibrant to stand out more against the dull background."
+    },
+    {
+     "persona": 2,
+     "score": 70.0,
+     "complaint": "The red bench could be more vibrant to stand out more against the muted background."
+    },
+    {
+     "persona": 3,
+     "score": 70.0,
+     "complaint": "The red bench could be more vibrant to stand out more against the muted background."
+    },
+    {
+     "persona": 4,
+     "score": 70.0,
+     "complaint": "The red bench could be more vibrant to stand out more against the dull background."
+    },
+    {
+     "persona": 5,
+     "score": 70.0,
+     "complaint": "The red bench could be more vibrant to stand out more against the dull background."
+    },
+    {
+     "persona": 6,
+     "score": 60.0,
+     "complaint": "The red bench could be more vibrant to stand out more against the dull background."
+    },
+    {
+     "persona": 7,
+     "score": 70.0,
+     "complaint": "The red bench could be more vibrant to stand out more against the dull background."
+    },
+    {
+     "persona": 8,
+     "score": 70.0,
+     "complaint": "The red bench could be more vibrant to stand out more against the dull background."
+    },
+    {
+     "persona": 9,
+     "score": 70.0,
+     "complaint": "The red bench could be more vibrant to stand out more against the dull background."
+    }
+   ]
+  }
+ ]
+}

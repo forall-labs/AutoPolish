@@ -1,0 +1,21 @@
+cff-version: 1.2.0
+message: "If you use this code or its results, please cite the paper."
+title: "AutoPolish: Improving Visual Aesthetics with Synthetic Audience Critique"
+authors:
+  - family-names: Fadaeinejad
+    given-names: Amin
+  - family-names: Pakdamansavoji
+    given-names: Sajjad
+license: MIT
+repository-code: "https://github.com/SajjadPSavoji/AutoPolish"
+url: "https://sajjadpsavoji.github.io/AutoPolish/"
+preferred-citation:
+  type: article
+  title: "AutoPolish: Improving Visual Aesthetics with Synthetic Audience Critique"
+  authors:
+    - family-names: Fadaeinejad
+      given-names: Amin
+    - family-names: Pakdamansavoji
+      given-names: Sajjad
+  journal: "arXiv preprint arXiv:XXXX.XXXXX"
+  year: 2026

@@ -1,0 +1,11 @@
+# CPU environment: analysis, figures, data download and the website assets.
+# Tested with Python 3.12, numpy 2.5, pandas 3.0, scipy 1.18, matplotlib 3.11 and scikit-learn 1.9.
+numpy>=1.26
+pandas>=2.2
+scipy>=1.11
+matplotlib>=3.8
+scikit-learn>=1.4
+Pillow>=10
+huggingface_hub>=0.26
+datasets>=3.0
+python-dotenv>=1.0

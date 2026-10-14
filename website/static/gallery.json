@@ -1,0 +1,242 @@
+[
+ {
+  "image_id": "eva__365027",
+  "note": "A player and a court turn a lone ball into a scene, which no other critic tries.",
+  "source": {
+   "image": "gallery/eva__365027/source.jpg",
+   "score": 5.006
+  },
+  "critics": {
+   "static": {
+    "image": "gallery/eva__365027/static.jpg",
+    "score": 5.006,
+    "similarity": 1.0
+   },
+   "blind": {
+    "image": "gallery/eva__365027/blind.jpg",
+    "score": 5.136,
+    "similarity": 0.964
+   },
+   "society": {
+    "image": "gallery/eva__365027/society.jpg",
+    "score": 5.284,
+    "similarity": 0.845
+   },
+   "reward_only": {
+    "image": "gallery/eva__365027/reward_only.jpg",
+    "score": 5.038,
+    "similarity": 0.99
+   }
+  }
+ },
+ {
+  "image_id": "eva__18116",
+  "note": "The green bench is turned bright red, giving the gray wall a clear point of focus.",
+  "source": {
+   "image": "gallery/eva__18116/source.jpg",
+   "score": 5.04
+  },
+  "critics": {
+   "static": {
+    "image": "gallery/eva__18116/static.jpg",
+    "score": 5.292,
+    "similarity": 0.955
+   },
+   "blind": {
+    "image": "gallery/eva__18116/blind.jpg",
+    "score": 5.245,
+    "similarity": 0.955
+   },
+   "society": {
+    "image": "gallery/eva__18116/society.jpg",
+    "score": 5.541,
+    "similarity": 0.907
+   },
+   "reward_only": {
+    "image": "gallery/eva__18116/reward_only.jpg",
+    "score": 5.451,
+    "similarity": 0.936
+   }
+  }
+ },
+ {
+  "image_id": "eva__489134",
+  "note": "A bright Milky Way and many stars fill the empty sky, making it the subject of the photo.",
+  "source": {
+   "image": "gallery/eva__489134/source.jpg",
+   "score": 5.549
+  },
+  "critics": {
+   "static": {
+    "image": "gallery/eva__489134/static.jpg",
+    "score": 5.761,
+    "similarity": 0.896
+   },
+   "blind": {
+    "image": "gallery/eva__489134/blind.jpg",
+    "score": 5.735,
+    "similarity": 0.96
+   },
+   "society": {
+    "image": "gallery/eva__489134/society.jpg",
+    "score": 6.605,
+    "similarity": 0.787
+   },
+   "reward_only": {
+    "image": "gallery/eva__489134/reward_only.jpg",
+    "score": 5.761,
+    "similarity": 0.896
+   }
+  }
+ },
+ {
+  "image_id": "eva__742534",
+  "note": "The steel ovens behind the chef become a bright kitchen, giving the photo a warmer setting.",
+  "source": {
+   "image": "gallery/eva__742534/source.jpg",
+   "score": 5.248
+  },
+  "critics": {
+   "static": {
+    "image": "gallery/eva__742534/static.jpg",
+    "score": 5.278,
+    "similarity": 0.993
+   },
+   "blind": {
+    "image": "gallery/eva__742534/blind.jpg",
+    "score": 5.281,
+    "similarity": 0.993
+   },
+   "society": {
+    "image": "gallery/eva__742534/society.jpg",
+    "score": 5.501,
+    "similarity": 0.817
+   },
+   "reward_only": {
+    "image": "gallery/eva__742534/reward_only.jpg",
+    "score": 5.285,
+    "similarity": 0.999
+   }
+  }
+ },
+ {
+  "image_id": "eva__444303",
+  "note": "A truck is added to the empty snowy courtyard, giving the scene scale and a point of interest.",
+  "source": {
+   "image": "gallery/eva__444303/source.jpg",
+   "score": 5.254
+  },
+  "critics": {
+   "static": {
+    "image": "gallery/eva__444303/static.jpg",
+    "score": 5.339,
+    "similarity": 0.952
+   },
+   "blind": {
+    "image": "gallery/eva__444303/blind.jpg",
+    "score": 5.288,
+    "similarity": 0.963
+   },
+   "society": {
+    "image": "gallery/eva__444303/society.jpg",
+    "score": 5.514,
+    "similarity": 0.839
+   },
+   "reward_only": {
+    "image": "gallery/eva__444303/reward_only.jpg",
+    "score": 5.356,
+    "similarity": 0.943
+   }
+  }
+ },
+ {
+  "image_id": "eva__696581",
+  "note": "A brighter, textured road adds detail below the sunset.",
+  "source": {
+   "image": "gallery/eva__696581/source.jpg",
+   "score": 4.61
+  },
+  "critics": {
+   "static": {
+    "image": "gallery/eva__696581/static.jpg",
+    "score": 4.839,
+    "similarity": 0.971
+   },
+   "blind": {
+    "image": "gallery/eva__696581/blind.jpg",
+    "score": 4.951,
+    "similarity": 0.822
+   },
+   "society": {
+    "image": "gallery/eva__696581/society.jpg",
+    "score": 5.121,
+    "similarity": 0.906
+   },
+   "reward_only": {
+    "image": "gallery/eva__696581/reward_only.jpg",
+    "score": 5.037,
+    "similarity": 0.946
+   }
+  }
+ },
+ {
+  "image_id": "eva__698274",
+  "note": "The rabbit is made larger and sharper, so it stands out as the subject.",
+  "source": {
+   "image": "gallery/eva__698274/source.jpg",
+   "score": 4.786
+  },
+  "critics": {
+   "static": {
+    "image": "gallery/eva__698274/static.jpg",
+    "score": 5.645,
+    "similarity": 0.961
+   },
+   "blind": {
+    "image": "gallery/eva__698274/blind.jpg",
+    "score": 5.489,
+    "similarity": 0.974
+   },
+   "society": {
+    "image": "gallery/eva__698274/society.jpg",
+    "score": 5.606,
+    "similarity": 0.901
+   },
+   "reward_only": {
+    "image": "gallery/eva__698274/reward_only.jpg",
+    "score": 5.584,
+    "similarity": 0.974
+   }
+  }
+ },
+ {
+  "image_id": "eva__449",
+  "note": "The black night sky becomes a pale background, so the tower's structure is easier to see.",
+  "source": {
+   "image": "gallery/eva__449/source.jpg",
+   "score": 5.417
+  },
+  "critics": {
+   "static": {
+    "image": "gallery/eva__449/static.jpg",
+    "score": 5.446,
+    "similarity": 0.991
+   },
+   "blind": {
+    "image": "gallery/eva__449/blind.jpg",
+    "score": 5.471,
+    "similarity": 0.989
+   },
+   "society": {
+    "image": "gallery/eva__449/society.jpg",
+    "score": 5.6,
+    "similarity": 0.933
+   },
+   "reward_only": {
+    "image": "gallery/eva__449/reward_only.jpg",
+    "score": 5.444,
+    "similarity": 0.988
+   }
+  }
+ }
+]

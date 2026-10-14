@@ -1,0 +1,647 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>AutoPolish</title>
+<meta name="description" content="AutoPolish replaces the person guiding each round of image editing with a synthetic audience: many copies of one vision-language model, each reacting as a different viewer.">
+<meta property="og:title" content="AutoPolish: Improving Visual Aesthetics with Synthetic Audience Critique">
+<meta property="og:description" content="A synthetic audience of simulated viewers critiques an image, and an editing loop keeps an edit only when an independent scorer rates it higher.">
+<meta property="og:image" content="static/figs/overview.png">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=IBM+Plex+Mono:wght@400;500&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
+<style>
+/* Layout: one reading column (~68ch) inside a 1120px frame; the round viewer and the
+   figures break out to the full frame. Figures sit on a light "print plate" in both themes. */
+:root {
+  --paper: #f5f7fa;        /* page ground, a cool off-white biased toward the navy */
+  --surface: #ffffff;      /* plates and panels */
+  --ink: #141821;
+  --muted: #586174;
+  --rule: #dce1e9;
+  --navy: #0072b2;         /* AutoPolish, the accent (Okabe-Ito, as in the paper's figures) */
+  --navy-ink: #005a8c;
+  --magenta: #b85d92;      /* blind VLM critic */
+  --olive: #8c8200;        /* reward-only, the rim of the figures' yellow */
+  --yellow: #f0e442;
+  --gray: #9a9a96;         /* static string critic */
+  --wash: #e8f1f8;         /* faint navy tint for highlighted cells */
+  --plate: #ffffff;        /* figure plates stay white so the paper's figures read */
+  --shadow: 0 1px 2px rgba(20, 24, 33, .06), 0 8px 24px rgba(20, 24, 33, .06);
+
+  --display: "Bricolage Grotesque", "Avenir Next", "Segoe UI", system-ui, sans-serif;
+  --body: "Source Serif 4", "Iowan Old Style", "Palatino Linotype", Georgia, serif;
+  --mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+
+  --step--1: .8125rem;
+  --step-0: 1.0625rem;
+  --step-1: 1.3rem;
+  --step-2: 1.75rem;
+  --step-3: clamp(2.1rem, 4vw, 2.75rem);
+  --step-4: clamp(3.2rem, 9vw, 6.25rem);
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #0e1219; --surface: #151b25; --ink: #e8ecf3; --muted: #9aa4b5; --rule: #273042;
+    --navy: #4aa8e0; --navy-ink: #7cc0ea; --magenta: #e09ac2; --olive: #c9bd3a; --yellow: #f0e442;
+    --gray: #a9a9a4; --wash: #16283a; --plate: #f4f6f9;
+    --shadow: 0 1px 2px rgba(0, 0, 0, .4), 0 8px 24px rgba(0, 0, 0, .35);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #0e1219; --surface: #151b25; --ink: #e8ecf3; --muted: #9aa4b5; --rule: #273042;
+  --navy: #4aa8e0; --navy-ink: #7cc0ea; --magenta: #e09ac2; --olive: #c9bd3a; --yellow: #f0e442;
+  --gray: #a9a9a4; --wash: #16283a; --plate: #f4f6f9;
+  --shadow: 0 1px 2px rgba(0, 0, 0, .4), 0 8px 24px rgba(0, 0, 0, .35);
+  color-scheme: dark;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font: 400 var(--step-0)/1.6 var(--body);
+  font-optical-sizing: auto;
+}
+img { max-width: 100%; height: auto; display: block; }
+a { color: var(--navy-ink); text-underline-offset: .18em; text-decoration-thickness: 1px; }
+a:hover { text-decoration-thickness: 2px; }
+:focus-visible { outline: 2px solid var(--navy); outline-offset: 3px; border-radius: 4px; }
+
+.frame { max-width: 1120px; margin-inline: auto; padding-inline: max(16px, 4vw); }
+.prose { max-width: 68ch; }
+.prose p { margin: 0 0 1em; }
+h1, h2, h3 { font-family: var(--display); text-wrap: balance; margin: 0; }
+h2 { font-size: var(--step-3); font-weight: 700; letter-spacing: -.02em; line-height: 1.1; }
+h3 { font-size: var(--step-1); font-weight: 700; letter-spacing: -.01em; line-height: 1.25; }
+.label {
+  font: 500 var(--step--1)/1.3 var(--mono);
+  letter-spacing: .06em; text-transform: uppercase; color: var(--muted);
+}
+section { padding-block: clamp(3rem, 7vw, 5.5rem); }
+section + section { border-top: 1px solid var(--rule); }
+
+/* ---------- header ---------- */
+.masthead { padding-block: clamp(2.5rem, 7vw, 5rem) 2rem; }
+.masthead h1 {
+  font-size: var(--step-4); font-weight: 800; letter-spacing: -.045em; line-height: .92;
+}
+.masthead h1 .polish { color: var(--navy); }
+.subtitle {
+  font: 500 var(--step-2)/1.2 var(--display); letter-spacing: -.015em;
+  margin: .9rem 0 0; max-width: 26ch; color: var(--ink);
+}
+.byline { margin-top: 1.75rem; display: grid; gap: .3rem; }
+.authors { font: 600 var(--step-1)/1.35 var(--body); margin: 0; }
+.authors sup { font: 500 .7em var(--mono); color: var(--navy-ink); margin-left: .1em; }
+.affil { margin: 0; color: var(--muted); font-size: var(--step-0); }
+.affil small { font: 400 var(--step--1) var(--mono); }
+.links { display: flex; flex-wrap: wrap; gap: .6rem; margin-top: 1.75rem; }
+.btn {
+  display: inline-flex; align-items: center; gap: .5rem;
+  padding: .6rem 1rem; border-radius: 999px;
+  font: 500 .95rem/1 var(--mono); letter-spacing: .01em; text-decoration: none;
+  color: var(--surface); background: var(--ink); border: 1px solid var(--ink);
+}
+.btn:hover { background: var(--navy-ink); border-color: var(--navy-ink); color: #fff; }
+.btn svg { width: 1.05em; height: 1.05em; flex: none; }
+.btn.ghost { background: transparent; color: var(--ink); border-color: var(--rule); }
+.btn.ghost:hover { border-color: var(--navy); color: var(--navy-ink); background: transparent; }
+.btn[aria-disabled="true"] { background: transparent; color: var(--muted); border: 1px dashed var(--rule); pointer-events: none; }
+.btn[aria-disabled="true"] em { font-style: normal; font-size: .8em; }
+.tldr {
+  margin: 2.25rem 0 0; max-width: 60ch;
+  font-size: var(--step-1); line-height: 1.5;
+}
+
+/* ---------- round viewer ---------- */
+.viewer {
+  display: grid; gap: clamp(1.25rem, 3vw, 2.25rem);
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+  background: var(--surface); border: 1px solid var(--rule); border-radius: 18px;
+  padding: clamp(1rem, 2.5vw, 1.75rem); box-shadow: var(--shadow);
+}
+@media (max-width: 880px) { .viewer { grid-template-columns: minmax(0, 1fr); } }
+.viewer-head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: .5rem 1rem; margin-bottom: 1rem; }
+.viewer-head h2 { font-size: var(--step-2); }
+.stage { position: relative; border-radius: 12px; overflow: hidden; background: var(--plate); aspect-ratio: 3 / 2; }
+.stage img { width: 100%; height: 100%; object-fit: cover; transition: opacity .25s ease; }
+.stage .peek {
+  position: absolute; left: .75rem; bottom: .75rem;
+  font: 500 var(--step--1)/1 var(--mono); padding: .5rem .75rem; border-radius: 999px;
+  background: rgba(20, 24, 33, .78); color: #fff; border: 0; cursor: pointer;
+  -webkit-user-select: none; user-select: none; touch-action: none;
+}
+.stage .peek:hover { background: rgba(20, 24, 33, .92); }
+.stage .tag {
+  position: absolute; right: .75rem; top: .75rem;
+  font: 500 var(--step--1)/1 var(--mono); padding: .45rem .7rem; border-radius: 999px;
+  background: rgba(255, 255, 255, .9); color: #141821;
+}
+.timeline { margin-top: 1rem; }
+.track { display: grid; grid-template-columns: repeat(11, minmax(0, 1fr)); gap: 4px; }
+.tick {
+  appearance: none; border: 1px solid var(--rule); background: var(--paper); color: var(--muted);
+  border-radius: 8px; padding: .45rem 0 .4rem; cursor: pointer;
+  font: 500 .8rem/1 var(--mono); display: grid; justify-items: center; gap: .3rem;
+  font-variant-numeric: tabular-nums;
+}
+.tick i { width: 7px; height: 7px; border-radius: 50%; border: 1.5px solid var(--gray); }
+.tick.kept i { background: var(--navy); border-color: var(--navy); }
+.tick[aria-pressed="true"] { border-color: var(--navy); color: var(--ink); background: var(--wash); }
+.tick:hover { border-color: var(--navy); }
+.legend-row { display: flex; flex-wrap: wrap; gap: .4rem 1.1rem; margin-top: .6rem; font: 400 var(--step--1)/1.3 var(--mono); color: var(--muted); }
+.legend-row span { display: inline-flex; align-items: center; gap: .4rem; }
+.legend-row i { width: 7px; height: 7px; border-radius: 50%; border: 1.5px solid var(--gray); display: inline-block; }
+.legend-row i.kept { background: var(--navy); border-color: var(--navy); }
+.controls { display: flex; gap: .5rem; margin-top: .9rem; flex-wrap: wrap; }
+.chip-btn {
+  appearance: none; font: 500 var(--step--1)/1 var(--mono); padding: .5rem .8rem; border-radius: 999px;
+  background: transparent; color: var(--ink); border: 1px solid var(--rule); cursor: pointer;
+}
+.chip-btn:hover { border-color: var(--navy); color: var(--navy-ink); }
+
+.readout { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .75rem; margin-bottom: 1rem; }
+.readout div { border-top: 2px solid var(--rule); padding-top: .5rem; min-width: 0; }
+.readout .v { font: 700 var(--step-2)/1.1 var(--display); letter-spacing: -.02em; font-variant-numeric: tabular-nums; }
+.readout .v small { font: 500 .55em var(--mono); color: var(--muted); letter-spacing: 0; margin-left: .25rem; }
+.readout .v.up small { color: var(--navy-ink); }
+.verdict { font: 600 var(--step-0)/1.35 var(--display); margin: 0 0 .35rem; }
+#r-instr-label { display: block; margin: .9rem 0 .4rem; }
+.verdict.kept { color: var(--navy-ink); }
+.verdict.rejected { color: var(--magenta); }
+.instruction {
+  margin: 0 0 1.25rem; padding: .8rem 1rem; border-radius: 10px; background: var(--paper);
+  font: italic 400 var(--step-0)/1.5 var(--body); border-left: 3px solid var(--rule);
+}
+.instruction.kept { border-left-color: var(--navy); }
+.instruction.rejected { border-left-color: var(--magenta); }
+.panel-title { display: flex; justify-content: space-between; gap: 1rem; align-items: baseline; margin-bottom: .6rem; }
+.personas { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; list-style: none; padding: 0; margin: 0 0 1rem; }
+.persona {
+  display: flex; justify-content: space-between; align-items: center; gap: .5rem;
+  padding: .45rem .6rem; border-radius: 8px; background: var(--paper);
+  border-left: 4px solid var(--g, var(--rule)); min-width: 0;
+}
+.persona .who { font: 600 .92rem/1.2 var(--body); }
+.persona .exp { font: 400 .72rem/1.3 var(--mono); color: var(--muted); display: block; }
+.persona .s { font: 500 .85rem/1 var(--mono); font-variant-numeric: tabular-nums; color: var(--ink); flex: none; }
+.complaints { list-style: none; padding: 0; margin: 0; display: grid; gap: .6rem; }
+.complaints li { display: grid; grid-template-columns: 2.4rem minmax(0, 1fr); gap: .6rem; align-items: start; }
+.complaints .n {
+  font: 500 .8rem/1 var(--mono); text-align: center; padding: .4rem 0; border-radius: 6px;
+  color: #fff; background: var(--g); font-variant-numeric: tabular-nums;
+}
+.complaints q { quotes: none; font-size: .98rem; line-height: 1.45; }
+.empty-note { color: var(--muted); font-style: italic; margin: 0; }
+
+/* ---------- figures ---------- */
+.plate {
+  margin: 2rem 0 0; background: var(--plate); border-radius: 14px; padding: clamp(.75rem, 2vw, 1.5rem);
+  border: 1px solid var(--rule);
+}
+.plate img { margin-inline: auto; }
+figure { margin: 0; }
+figcaption { font-size: .95rem; line-height: 1.5; color: var(--muted); margin-top: .75rem; max-width: 80ch; }
+figcaption b { color: var(--ink); font-weight: 600; }
+.plate + figcaption { margin-top: .75rem; }
+
+/* ---------- method steps ---------- */
+.steps { list-style: none; padding: 0; margin: 2.5rem 0 0; display: grid; gap: 1.25rem; grid-template-columns: repeat(3, minmax(0, 1fr)); counter-reset: step; }
+@media (max-width: 860px) { .steps { grid-template-columns: minmax(0, 1fr); } }
+.steps li { counter-increment: step; border-top: 2px solid var(--ink); padding-top: .9rem; min-width: 0; }
+.steps li::before { content: "Step " counter(step); display: block; font: 500 var(--step--1)/1 var(--mono); letter-spacing: .06em; text-transform: uppercase; color: var(--navy-ink); margin-bottom: .6rem; }
+.steps p { margin: .5rem 0 0; color: var(--muted); }
+.steps code, .prose code, td code { font: 400 .88em var(--mono); }
+
+/* ---------- findings ---------- */
+.findings { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1rem; margin-top: 2.25rem; }
+@media (max-width: 980px) { .findings { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 520px) { .findings { grid-template-columns: minmax(0, 1fr); } }
+.finding { background: var(--surface); border: 1px solid var(--rule); border-radius: 14px; padding: 1.1rem 1.1rem 1.2rem; display: grid; align-content: start; gap: .5rem; min-width: 0; }
+.finding .big { font: 800 clamp(2.4rem, 5vw, 3.1rem)/1 var(--display); letter-spacing: -.04em; color: var(--navy); font-variant-numeric: tabular-nums; }
+.finding p { margin: 0; font-size: .98rem; line-height: 1.5; }
+.finding .src { font: 400 .75rem/1.4 var(--mono); color: var(--muted); }
+
+.result { margin-top: 3.5rem; display: grid; gap: .5rem; }
+.result h3 { max-width: 40ch; }
+.result .plate { margin-top: 1rem; }
+.result.narrow .plate img { max-width: 560px; }
+
+/* ---------- table ---------- */
+.table-wrap { overflow-x: auto; margin-top: 2rem; border: 1px solid var(--rule); border-radius: 12px; background: var(--surface); }
+table { border-collapse: collapse; width: 100%; min-width: 640px; font-size: .95rem; }
+th, td { padding: .7rem .9rem; text-align: right; white-space: nowrap; font-variant-numeric: tabular-nums; }
+th:first-child, td:first-child { text-align: left; }
+thead th { font: 500 var(--step--1)/1.3 var(--mono); letter-spacing: .04em; text-transform: uppercase; color: var(--muted); border-bottom: 1px solid var(--rule); vertical-align: bottom; }
+tbody td { border-bottom: 1px solid var(--rule); font-family: var(--mono); font-size: .9rem; }
+tbody tr:last-child td { border-bottom: 0; }
+tbody td:first-child { font: 600 1rem var(--body); }
+tr.ours td { background: var(--wash); }
+tr.ours td:first-child { color: var(--navy-ink); }
+tr.ref td:first-child { font-style: italic; font-weight: 400; }
+.swatch { display: inline-block; width: .7em; height: .7em; border-radius: 50%; margin-right: .5em; vertical-align: .05em; }
+
+/* ---------- gallery ---------- */
+.thumbs { display: grid; grid-template-columns: repeat(8, minmax(0, 1fr)); gap: 8px; margin-top: 2rem; }
+@media (max-width: 760px) { .thumbs { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+.thumb { appearance: none; padding: 0; border: 2px solid transparent; border-radius: 10px; overflow: hidden; cursor: pointer; background: var(--plate); aspect-ratio: 1; }
+.thumb img { width: 100%; height: 100%; object-fit: cover; }
+.thumb[aria-pressed="true"] { border-color: var(--navy); }
+.thumb:hover { border-color: var(--navy); }
+.compare { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 10px; margin-top: 1.25rem; }
+@media (max-width: 900px) { .compare { grid-template-columns: repeat(2, minmax(0, 1fr)); } .compare .cell:first-child { grid-column: 1 / -1; } }
+.cell { margin: 0; min-width: 0; }
+.cell .img { border-radius: 10px; overflow: hidden; background: var(--plate); aspect-ratio: 4 / 3; border: 2px solid transparent; }
+.cell .img img { width: 100%; height: 100%; object-fit: cover; }
+.cell.ours .img { border-color: var(--navy); }
+.cell figcaption { margin-top: .5rem; display: flex; justify-content: space-between; gap: .5rem; font: 500 .8rem/1.3 var(--mono); color: var(--muted); max-width: none; }
+.cell figcaption b { font-family: var(--mono); font-weight: 500; color: var(--ink); }
+.cell.ours figcaption b { color: var(--navy-ink); }
+.gnote { margin: 1rem 0 0; font-size: var(--step-0); max-width: 70ch; }
+
+/* ---------- limitations, citation, footer ---------- */
+.limits { margin: 1.5rem 0 0; padding-left: 1.2rem; max-width: 68ch; }
+.limits li { margin-bottom: .6rem; }
+.bib { position: relative; margin-top: 1.5rem; }
+.bib pre {
+  margin: 0; overflow-x: auto; padding: 1.25rem 1.25rem; border-radius: 12px;
+  background: var(--surface); border: 1px solid var(--rule);
+  font: 400 .85rem/1.6 var(--mono); color: var(--ink);
+}
+.bib .chip-btn { position: absolute; top: .75rem; right: .75rem; background: var(--surface); }
+footer { padding-block: 2.5rem 3.5rem; border-top: 1px solid var(--rule); color: var(--muted); font-size: .92rem; }
+footer p { margin: 0 0 .5rem; max-width: 80ch; }
+
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; scroll-behavior: auto !important; } }
+</style>
+</head>
+<body>
+
+<header class="masthead frame">
+  <h1>Auto<span class="polish">Polish</span></h1>
+  <p class="subtitle">Improving Visual Aesthetics with Synthetic Audience Critique</p>
+  <div class="byline">
+    <p class="authors">Amin Fadaeinejad<sup>*</sup> &nbsp;·&nbsp; Sajjad Pakdamansavoji<sup>*</sup></p>
+    <p class="affil">Independent Research &nbsp; <small>* equal contribution</small></p>
+  </div>
+  <nav class="links" aria-label="Paper resources">
+    <!-- Replace href and drop aria-disabled once the arXiv version is posted. -->
+    <a class="btn" href="#" aria-disabled="true">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M7 3h7l5 5v13H7z"/><path d="M14 3v5h5M10 13h6M10 17h6"/></svg>
+      Paper <em>soon on arXiv</em></a>
+    <a class="btn" href="https://github.com/SajjadPSavoji/AutoPolish">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m8 7-5 5 5 5M16 7l5 5-5 5M14 4l-4 16"/></svg>
+      Code</a>
+    <a class="btn" href="https://huggingface.co/datasets/savoji/AUTOPOLISH">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><ellipse cx="12" cy="6" rx="8" ry="3"/><path d="M4 6v6c0 1.7 3.6 3 8 3s8-1.3 8-3V6M4 12v6c0 1.7 3.6 3 8 3s8-1.3 8-3v-6"/></svg>
+      Results &amp; edits</a>
+    <!-- Replace href and drop aria-disabled once the thread is posted. -->
+    <a class="btn ghost" href="#" aria-disabled="true">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 4l16 16M20 4 4 20"/></svg>
+      Thread <em>soon</em></a>
+    <a class="btn ghost" href="#citation">BibTeX</a>
+  </nav>
+  <p class="tldr">Many copies of one vision-language model each react to a photograph as a different viewer. Their combined complaints become edit instructions, and an independent scorer keeps an edit only if the image scores higher and still looks like the original.</p>
+</header>
+
+<section class="frame" id="rounds" aria-labelledby="rounds-title" style="padding-top:1rem">
+  <div class="viewer-head">
+    <h2 id="rounds-title">Ten viewers, ten rounds, one bench</h2>
+    <span class="label">A real run from the paper · EVA photograph</span>
+  </div>
+  <div class="viewer">
+    <div>
+      <div class="stage">
+        <img id="round-img" src="static/rounds/eva__18116/round_10.jpg" alt="A concrete wall with a bright red bench after ten rounds of AutoPolish" width="960" height="640">
+        <span class="tag" id="round-tag">Round 10</span>
+        <button class="peek" id="peek" type="button" aria-describedby="peek-help">Hold to see the image before this round</button>
+      </div>
+      <span id="peek-help" hidden>Shows the best image before this round while held.</span>
+      <div class="timeline">
+        <div class="track" id="track" role="group" aria-label="Choose a round"></div>
+        <div class="legend-row">
+          <span><i class="kept"></i>edit kept</span>
+          <span><i></i>edit rejected, best image unchanged</span>
+        </div>
+        <div class="controls">
+          <button class="chip-btn" id="play" type="button">Play all rounds</button>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="readout">
+        <div><span class="label">Held-out score</span><div class="v" id="r-score">5.54<small>+0.50</small></div></div>
+        <div><span class="label">Similarity</span><div class="v" id="r-sim">0.91<small>floor 0.78</small></div></div>
+        <div><span class="label">Edits kept</span><div class="v" id="r-kept">4<small>of 10</small></div></div>
+      </div>
+      <p class="verdict kept" id="r-verdict">Round 10 kept. The edit raised the score, so it became the new best image.</p>
+      <span class="label" id="r-instr-label">Instruction tried</span>
+      <p class="instruction kept" id="r-instruction">Vividly color the red bench to stand out more against the muted background.</p>
+      <div class="panel-title"><span class="label">The panel's reactions that led to it</span><span class="label" id="r-panel-note">score of 100</span></div>
+      <ul class="personas" id="personas"></ul>
+      <ul class="complaints" id="complaints"></ul>
+    </div>
+  </div>
+</section>
+
+<section class="frame" id="abstract" aria-labelledby="abstract-title">
+  <div class="prose">
+    <span class="label">Abstract</span>
+    <h2 id="abstract-title" style="margin:.6rem 0 1.4rem">One operator's taste is not the audience's</h2>
+    <p>Text-guided image editing is an iterative, human-in-the-loop process that does not scale and restricts the final image to one operator's taste, which often misaligns with the target audience. We propose <b>AutoPolish</b>, which replaces that operator with a synthetic audience: many copies of a vision-language model, each reacting as a different viewer described by a short profile. An auto-research style loop turns their combined feedback into edits, keeping each edit only when an independent scorer rates it higher.</p>
+    <p>Across three datasets of photographs and paintings, only 19 to 47% of one person's rating is shared with other viewers, while the averages of two separate groups correlate at up to 0.96, so one rater poorly predicts the population average. Our audience captures how viewer groups differ up to 10× better than the same model without profiles, and agrees with the human majority on pairs of AI-generated images 6 percentage points more often than a simple baseline. In editing, AutoPolish matches generic critics in average gain while keeping images recognizable; it improves fewer images than a fixed instruction but makes larger edits and proposes 3× as many distinct changes.</p>
+  </div>
+</section>
+
+<section class="frame" id="method" aria-labelledby="method-title">
+  <div class="prose">
+    <span class="label">Method</span>
+    <h2 id="method-title" style="margin:.6rem 0 1rem">An audience proposes, an independent judge decides</h2>
+    <p>Nothing is trained. One frozen model plays every viewer, and the model that judges an edit comes from a different family than the one that proposes it, so the loop cannot improve its own score without improving the image.</p>
+  </div>
+  <figure>
+    <div class="plate"><img src="static/figs/overview.png" alt="Pipeline: persona cards feed a role-playing vision-language model whose reactions are aggregated; the complaints steer an instruction, an image editor applies it, and a held-out judge keeps the edit only if it scores higher." width="2400" height="999" loading="lazy"></div>
+    <figcaption><b>Top.</b> A frozen Qwen2-VL-7B is given N persona cards, each describing one viewer in plain text, and their reactions are combined into a group reaction. <b>Bottom.</b> The complaints become one instruction for FLUX.1 Kontext, and a held-out judge keeps the edit only if it scores higher while staying similar to the original.</figcaption>
+  </figure>
+  <ol class="steps">
+    <li><h3>Simulate the audience</h3><p>Each persona card describes a real rater from the dataset: age, gender, education, art and photography experience, personality or nationality. The model rates the image as that person and writes the one change they would want.</p></li>
+    <li><h3>Turn complaints into an edit</h3><p>The complaints of the whole panel are condensed into one instruction of at most fifteen words. The editor always applies the accumulated instruction to the original image, so artifacts cannot pile up, and proposes three candidates.</p></li>
+    <li><h3>Keep only real improvements</h3><p>A LAION aesthetic predictor scores each candidate, and DINOv2 checks that it still resembles the original (similarity at least 0.78). The best candidate replaces the current image only if both checks pass. The loop runs for ten rounds.</p></li>
+  </ol>
+</section>
+
+<section class="frame" id="results" aria-labelledby="results-title">
+  <div class="prose">
+    <span class="label">Results</span>
+    <h2 id="results-title" style="margin:.6rem 0 1rem">Groups are predictable where individuals are not</h2>
+    <p>We test the audience on 4,000 photographs from PARA, 4,070 from EVA and 4,000 paintings from LAPIS, replaying each dataset's real raters as personas, and on 898 pairs of AI-generated images from Rapidata.</p>
+  </div>
+  <div class="findings">
+    <div class="finding"><span class="big">19–47%</span><p>of one person's rating is shared with other viewers, while the averages of two separate groups agree at up to 0.96.</p><span class="src">reliability, three datasets</span></div>
+    <div class="finding"><span class="big">10×</span><p>better separation of viewer groups than the same model without profiles, 0.166 against 0.016 on paintings.</p><span class="src">group separation, LAPIS</span></div>
+    <div class="finding"><span class="big">+6 pts</span><p>agreement with the human majority on AI-generated pairs, 65.7% with twenty personas against 60.0% for always picking the more popular model.</p><span class="src">Rapidata pairs</span></div>
+    <div class="finding"><span class="big">3×</span><p>as many distinct changes proposed per round as a generic critic, 3.12 against 1.00, at the same average gain.</p><span class="src">editing, 100 photographs</span></div>
+  </div>
+
+  <figure class="result">
+    <h3>The persona changes what the model writes more than what it scores</h3>
+    <div class="plate"><img src="static/figs/pf_persona.png" alt="Three bar charts: group error before and after calibration; attribute AUC from the comment text with and without a persona; distinct comments per rater." width="2000" height="347" loading="lazy"></div>
+    <figcaption><b>Left.</b> Error of the audience's average rating before and after calibration, against the prior. <b>Middle.</b> How well a classifier recovers a rater's attribute from the comment alone. <b>Right.</b> Distinct comments per rater of an image, with and without a persona. Calibration beats the prior on every dataset, and the persona makes the comments more diverse and more telling of the viewer.</figcaption>
+  </figure>
+
+  <figure class="result">
+    <h3>The persona moves the scores the way real groups differ</h3>
+    <div class="plate"><img src="static/figs/pf_steer.png" alt="Three scatter plots of real against simulated group departures for PARA, EVA and LAPIS, with correlations of +0.37, −0.24 and +0.39." width="2000" height="332" loading="lazy"></div>
+    <figcaption>How far each group of viewers departs from the crowd in its real ratings (horizontal) and in the model's ratings under that group's persona (vertical). Each point is one group, sized by how many ratings it has. The model follows the real groups on PARA and LAPIS but not on EVA, which records the least about its raters.</figcaption>
+  </figure>
+
+  <figure class="result">
+    <h3>A larger panel agrees more often with the crowd</h3>
+    <div class="plate"><img src="static/figs/pf_generated.png" alt="Left: agreement with the crowd majority rising with panel size above the popularity prior. Right: panel preference share against crowd preference share per pair." width="2000" height="424" loading="lazy"></div>
+    <figcaption><b>Left.</b> Agreement with the crowd's majority on AI-generated pairs as the panel grows, against the prior of always picking the more popular model. <b>Right.</b> The panel's preference share against the crowd's, per pair (r = 0.47).</figcaption>
+  </figure>
+
+  <figure class="result">
+    <h3>In editing, AutoPolish matches the other critics on average and makes larger changes</h3>
+    <div class="plate"><img src="static/figs/pf_autopolish.png" alt="Left: best-so-far score over ten rounds for four critics. Right: final gain against similarity to the original, all above the 0.78 floor." width="2000" height="513" loading="lazy"></div>
+    <figcaption><b>Left.</b> Best score so far at each round, averaged over 100 photographs, with a 95% bootstrap band. <b>Right.</b> Final gain of each image against its similarity to the original, with the 0.78 floor marked. Almost every image stays far above the floor.</figcaption>
+  </figure>
+
+  <div class="table-wrap" role="region" aria-label="Results of each critic" tabindex="0">
+    <table>
+      <thead><tr><th>Critic</th><th>Gain</th><th>95% CI</th><th>Images improved</th><th>Gain per improved</th><th>Edit size</th><th>Complaints per round</th></tr></thead>
+      <tbody>
+        <tr><td><span class="swatch" style="background:var(--gray)"></span>static string</td><td>0.164</td><td>[0.135, 0.196]</td><td>84%</td><td>0.195</td><td>0.032</td><td>n/a</td></tr>
+        <tr><td><span class="swatch" style="background:var(--magenta)"></span>blind VLM</td><td>0.155</td><td>[0.126, 0.185]</td><td>72%</td><td>0.215</td><td>0.036</td><td>1.00</td></tr>
+        <tr class="ours"><td><span class="swatch" style="background:var(--navy)"></span>AutoPolish</td><td>0.170</td><td>[0.136, 0.207]</td><td>69%</td><td>0.247</td><td>0.049</td><td>3.12</td></tr>
+        <tr class="ref"><td><span class="swatch" style="background:var(--yellow);box-shadow:inset 0 0 0 1.5px var(--olive)"></span>reward-only</td><td>0.187</td><td>[0.157, 0.221]</td><td>86%</td><td>0.218</td><td>0.040</td><td>n/a</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="prose" style="margin-top:1rem;color:var(--muted);font-size:.95rem">Ten rounds on 100 photographs (50 PARA, 50 EVA). Gain is the rise in the held-out aesthetic score. The differences in average gain between critics are within their confidence intervals; reward-only optimizes the scorer directly and is a reference, not a comparable critic.</p>
+</section>
+
+<section class="frame" id="gallery" aria-labelledby="gallery-title">
+  <div class="prose">
+    <span class="label">Examples</span>
+    <h2 id="gallery-title" style="margin:.6rem 0 1rem">Where AutoPolish changes the picture</h2>
+    <p>Each critic's best image after ten rounds, with its held-out score. AutoPolish often changes what the photo contains, while the other critics mostly adjust light and color. Choose a photograph.</p>
+  </div>
+  <div class="thumbs" id="thumbs" role="group" aria-label="Choose an example"></div>
+  <div class="compare" id="compare"></div>
+  <p class="gnote" id="gnote"></p>
+</section>
+
+<section class="frame" id="limits" aria-labelledby="limits-title">
+  <div class="prose">
+    <span class="label">Limitations</span>
+    <h2 id="limits-title" style="margin:.6rem 0 0">What these results do not show</h2>
+  </div>
+  <ul class="limits">
+    <li>Every result comes from one frozen model, Qwen2-VL-7B-Instruct. Whether the audience is a property of the method or of this model is untested.</li>
+    <li>Editing gains are measured by an automatic aesthetic scorer, not by people. The next step is to ask real viewers whether they prefer the edits.</li>
+    <li>AutoPolish improves fewer images than a fixed instruction (69% against 84%), although its gains on the images it improves are larger.</li>
+    <li>The audience reproduces groups, not individuals: its profile explains at most 4% of one person's taste.</li>
+    <li>The model is close to fair on age, gender and experience but not on where the viewer comes from, with a calibration gap of 0.50 for nationality on LAPIS.</li>
+  </ul>
+</section>
+
+<section class="frame" id="citation" aria-labelledby="citation-title">
+  <span class="label">Citation</span>
+  <h2 id="citation-title" style="margin:.6rem 0 0">BibTeX</h2>
+  <div class="bib">
+    <button class="chip-btn" id="copy-bib" type="button">Copy</button>
+    <pre id="bibtex">@article{fadaeinejad2026autopolish,
+  title   = {AutoPolish: Improving Visual Aesthetics with Synthetic Audience Critique},
+  author  = {Fadaeinejad, Amin and Pakdamansavoji, Sajjad},
+  journal = {arXiv preprint arXiv:XXXX.XXXXX},
+  year    = {2026}
+}</pre>
+  </div>
+</section>
+
+<footer class="frame">
+  <p>The experiments use PARA, EVA, LAPIS and Rapidata under their authors' terms. The photographs on this page come from EVA, released under CC0.</p>
+  <p>Models: Qwen2-VL-7B-Instruct, FLUX.1 Kontext [dev], the LAION aesthetic predictor and DINOv2.</p>
+</footer>
+
+<script>
+(() => {
+  const $ = (s) => document.querySelector(s);
+  const GROUP_COLORS = ["var(--navy)", "var(--magenta)", "var(--olive)", "var(--gray)"];
+  const CRITICS = [["static", "static string"], ["blind", "blind VLM"], ["society", "AutoPolish"], ["reward_only", "reward-only"]];
+  const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  // ---------- round viewer ----------
+  fetch("static/rounds.json").then((r) => r.json()).then((data) => {
+    const rounds = data.rounds, panel = data.panel, source = rounds[0];
+    const img = $("#round-img"), track = $("#track"), peek = $("#peek");
+    let current = rounds.length - 1, timer = null;
+    const keptTotal = rounds.filter((r) => r.round > 0 && r.committed).length;
+    rounds.forEach((r) => {           // warm the cache so switching rounds is instant
+      const pre = new Image(); pre.src = r.image;
+    });
+
+    rounds.forEach((r) => {
+      const b = document.createElement("button");
+      b.type = "button";
+      b.className = "tick" + (r.round > 0 && r.committed ? " kept" : "");
+      b.innerHTML = `<span>${r.round}</span><i aria-hidden="true"></i>`;
+      b.setAttribute("aria-label", r.round === 0 ? "Source" : `Round ${r.round}, edit ${r.committed ? "kept" : "rejected"}`);
+      b.addEventListener("click", () => { stop(); show(r.round); });
+      track.appendChild(b);
+    });
+    track.addEventListener("keydown", (e) => {
+      if (e.key !== "ArrowRight" && e.key !== "ArrowLeft") return;
+      e.preventDefault(); stop();
+      show(Math.max(0, Math.min(rounds.length - 1, current + (e.key === "ArrowRight" ? 1 : -1))));
+      track.children[current].focus();
+    });
+
+    function show(k) {
+      current = k;
+      const r = rounds[k];
+      img.src = r.image;
+      img.alt = k === 0 ? "The source photograph: a concrete wall with a green bench" : `The best image after round ${k}`;
+      $("#round-tag").textContent = k === 0 ? "Source" : `Round ${k}`;
+      [...track.children].forEach((b, i) => b.setAttribute("aria-pressed", String(i === k)));
+      const gain = r.score - source.score;
+      $("#r-score").innerHTML = `${r.score.toFixed(2)}<small>${k === 0 ? "start" : (gain >= 0 ? "+" : "") + gain.toFixed(2)}</small>`;
+      $("#r-score").classList.toggle("up", gain > 0);
+      $("#r-sim").innerHTML = `${r.similarity.toFixed(2)}<small>floor 0.78</small>`;
+      const keptSoFar = rounds.filter((x) => x.round > 0 && x.round <= k && x.committed).length;
+      $("#r-kept").innerHTML = `${keptSoFar}<small>of ${k}</small>`;
+
+      const verdict = $("#r-verdict"), instr = $("#r-instruction");
+      verdict.className = "verdict"; instr.className = "instruction";
+      $("#r-instr-label").hidden = k === 0; instr.hidden = k === 0;
+      peek.disabled = k === 0; peek.hidden = k === 0;
+      if (k === 0) {
+        verdict.textContent = "The source photograph. The panel first reacts to it in round 1.";
+      } else if (r.committed) {
+        verdict.textContent = `Round ${k} kept. The edit raised the score, so it became the new best image.`;
+        verdict.classList.add("kept"); instr.classList.add("kept");
+        instr.textContent = r.instruction;
+      } else {
+        verdict.textContent = `Round ${k} rejected. No candidate scored higher, so the image did not change.`;
+        verdict.classList.add("rejected"); instr.classList.add("rejected");
+        instr.textContent = r.instruction;
+      }
+      renderPanel(r);
+    }
+
+    function renderPanel(r) {
+      const list = $("#personas"), comp = $("#complaints");
+      list.innerHTML = ""; comp.innerHTML = "";
+      // round k's record holds the panel's reactions to the best image before round k
+      const reactions = r.reactions;
+      const groups = [];
+      reactions.forEach((x) => {
+        let g = groups.find((g) => g.text === x.complaint);
+        if (!g) { g = { text: x.complaint, n: 0 }; groups.push(g); }
+        g.n += 1; x.group = g;
+      });
+      groups.sort((a, b) => b.n - a.n).forEach((g, i) => { g.color = GROUP_COLORS[Math.min(i, GROUP_COLORS.length - 1)]; });
+      reactions.forEach((x) => {
+        const p = panel[x.persona] || {};
+        const li = document.createElement("li");
+        li.className = "persona"; li.style.setProperty("--g", x.group.color);
+        li.innerHTML = `<span><span class="who"></span><span class="exp"></span></span><span class="s"></span>`;
+        li.querySelector(".who").textContent = p.who || "Viewer";
+        li.querySelector(".exp").textContent = `art ${p.art || "?"} · photo ${p.photo || "?"}`;
+        li.querySelector(".s").textContent = x.score == null ? "–" : String(Math.round(x.score));
+        li.title = p.card || "";
+        list.appendChild(li);
+      });
+      groups.forEach((g) => {
+        const li = document.createElement("li");
+        li.innerHTML = `<span class="n"></span><q></q>`;
+        li.querySelector(".n").textContent = `${g.n}×`;
+        li.querySelector(".n").style.setProperty("--g", g.color);
+        li.querySelector("q").textContent = g.text;
+        comp.appendChild(li);
+      });
+      if (!reactions.length) comp.innerHTML = `<li><p class="empty-note">Choose a round to see what the panel said.</p></li>`;
+    }
+
+    // hold to compare with the source
+    const down = (e) => {
+      if (current === 0) return;
+      e.preventDefault(); img.src = rounds[current - 1].image; peek.textContent = "Showing the image before this round";
+    };
+    const up = () => { img.src = rounds[current].image; peek.textContent = "Hold to see the image before this round"; };
+    peek.addEventListener("pointerdown", down);
+    ["pointerup", "pointerleave", "pointercancel", "blur"].forEach((ev) => peek.addEventListener(ev, up));
+    peek.addEventListener("keydown", (e) => { if (e.key === " " || e.key === "Enter") down(e); });
+    peek.addEventListener("keyup", (e) => { if (e.key === " " || e.key === "Enter") up(); });
+
+    function stop() { if (timer) { clearInterval(timer); timer = null; $("#play").textContent = "Play all rounds"; } }
+    $("#play").addEventListener("click", () => {
+      if (timer) return stop();
+      let k = 0; show(k);
+      $("#play").textContent = "Stop";
+      timer = setInterval(() => { k += 1; if (k >= rounds.length) return stop(); show(k); }, reduced ? 2400 : 1400);
+    });
+
+    show(current);
+  }).catch(() => { $("#r-panel-note").textContent = "Open through a web server to load the panel."; });
+
+  // ---------- gallery ----------
+  fetch("static/gallery.json").then((r) => r.json()).then((items) => {
+    const thumbs = $("#thumbs"), compare = $("#compare");
+    items.forEach((it, i) => {
+      const b = document.createElement("button");
+      b.type = "button"; b.className = "thumb";
+      b.innerHTML = `<img src="${it.source.image}" alt="" loading="lazy">`;
+      b.setAttribute("aria-label", `Example ${i + 1}`);
+      b.addEventListener("click", () => select(i));
+      thumbs.appendChild(b);
+    });
+    function cell(label, src, score, base, ours) {
+      const d = score - base;
+      const fig = document.createElement("figure");
+      fig.className = "cell" + (ours ? " ours" : "");
+      fig.innerHTML = `<div class="img"><img alt=""></div><figcaption><span></span><b></b></figcaption>`;
+      fig.querySelector("img").src = src;
+      fig.querySelector("img").alt = `${label}, held-out score ${score.toFixed(2)}`;
+      fig.querySelector("span").textContent = label;
+      fig.querySelector("b").textContent = base === null ? score.toFixed(2) : `${score.toFixed(2)} (${d >= 0 ? "+" : ""}${d.toFixed(2)})`;
+      return fig;
+    }
+    function select(i) {
+      const it = items[i];
+      [...thumbs.children].forEach((b, j) => b.setAttribute("aria-pressed", String(i === j)));
+      compare.innerHTML = "";
+      compare.appendChild(cell("source", it.source.image, it.source.score, null, false));
+      CRITICS.forEach(([key, label]) => {
+        const c = it.critics[key];
+        compare.appendChild(cell(label, c.image, c.score, it.source.score, key === "society"));
+      });
+      $("#gnote").textContent = `AutoPolish: ${it.note}`;
+    }
+    select(0);
+  }).catch(() => { $("#gnote").textContent = "Open through a web server to load the examples."; });
+
+  // ---------- BibTeX ----------
+  $("#copy-bib").addEventListener("click", async () => {
+    const btn = $("#copy-bib"), text = $("#bibtex").textContent;
+    try { await navigator.clipboard.writeText(text); btn.textContent = "Copied"; }
+    catch {
+      const range = document.createRange(); range.selectNodeContents($("#bibtex"));
+      const sel = window.getSelection(); sel.removeAllRanges(); sel.addRange(range);
+      btn.textContent = "Selected, press Ctrl+C";
+    }
+    setTimeout(() => { btn.textContent = "Copy"; }, 2000);
+  });
+})();
+</script>
+</body>
+</html>
