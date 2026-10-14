@@ -89,7 +89,7 @@ def save_jpg(src: Path, dest: Path) -> str:
     im = Image.open(src).convert("RGB")
     im.thumbnail((MAX_SIDE, MAX_SIDE), Image.LANCZOS)
     im.save(dest, "JPEG", quality=84, optimize=True, progressive=True)
-    return str(dest.relative_to(OUT))
+    return str(dest.relative_to(OUT.parent))  # path as the page references it
 
 
 def persona_tag(card: str) -> dict:

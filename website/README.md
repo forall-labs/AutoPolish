@@ -15,5 +15,5 @@ The example images and their data (`static/rounds*`, `static/gallery*`) are expo
 the paper's editing run by `python tools/build_website_assets.py`. The figures in
 `static/figs/` are the paper figures from `analysis/paper_figs.py`, resized for the web.
 
-Before launch, replace the two placeholder links in `index.html` (arXiv paper and X thread)
+Before launch, replace the three placeholder links in `index.html` (arXiv paper, Hugging Face and X thread)
 and the arXiv id in the BibTeX block.

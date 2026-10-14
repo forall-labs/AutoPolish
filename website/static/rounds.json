@@ -65,7 +65,7 @@
  "rounds": [
   {
    "round": 0,
-   "image": "rounds/eva__18116/round_00.jpg",
+   "image": "static/rounds/eva__18116/round_00.jpg",
    "score": 5.04,
    "similarity": 1.0,
    "committed": true,
@@ -74,7 +74,7 @@
   },
   {
    "round": 1,
-   "image": "rounds/eva__18116/round_01.jpg",
+   "image": "static/rounds/eva__18116/round_01.jpg",
    "score": 5.249,
    "similarity": 0.935,
    "committed": true,
@@ -134,7 +134,7 @@
   },
   {
    "round": 2,
-   "image": "rounds/eva__18116/round_02.jpg",
+   "image": "static/rounds/eva__18116/round_02.jpg",
    "score": 5.371,
    "similarity": 0.918,
    "committed": true,
@@ -194,7 +194,7 @@
   },
   {
    "round": 3,
-   "image": "rounds/eva__18116/round_02.jpg",
+   "image": "static/rounds/eva__18116/round_02.jpg",
    "score": 5.371,
    "similarity": 0.918,
    "committed": false,
@@ -254,7 +254,7 @@
   },
   {
    "round": 4,
-   "image": "rounds/eva__18116/round_02.jpg",
+   "image": "static/rounds/eva__18116/round_02.jpg",
    "score": 5.371,
    "similarity": 0.918,
    "committed": false,
@@ -314,7 +314,7 @@
   },
   {
    "round": 5,
-   "image": "rounds/eva__18116/round_02.jpg",
+   "image": "static/rounds/eva__18116/round_02.jpg",
    "score": 5.371,
    "similarity": 0.918,
    "committed": false,
@@ -374,7 +374,7 @@
   },
   {
    "round": 6,
-   "image": "rounds/eva__18116/round_02.jpg",
+   "image": "static/rounds/eva__18116/round_02.jpg",
    "score": 5.371,
    "similarity": 0.918,
    "committed": false,
@@ -434,7 +434,7 @@
   },
   {
    "round": 7,
-   "image": "rounds/eva__18116/round_02.jpg",
+   "image": "static/rounds/eva__18116/round_02.jpg",
    "score": 5.371,
    "similarity": 0.918,
    "committed": false,
@@ -494,7 +494,7 @@
   },
   {
    "round": 8,
-   "image": "rounds/eva__18116/round_02.jpg",
+   "image": "static/rounds/eva__18116/round_02.jpg",
    "score": 5.371,
    "similarity": 0.918,
    "committed": false,
@@ -554,7 +554,7 @@
   },
   {
    "round": 9,
-   "image": "rounds/eva__18116/round_09.jpg",
+   "image": "static/rounds/eva__18116/round_09.jpg",
    "score": 5.382,
    "similarity": 0.919,
    "committed": true,
@@ -614,7 +614,7 @@
   },
   {
    "round": 10,
-   "image": "rounds/eva__18116/round_10.jpg",
+   "image": "static/rounds/eva__18116/round_10.jpg",
    "score": 5.541,
    "similarity": 0.907,
    "committed": true,
