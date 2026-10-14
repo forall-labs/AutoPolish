@@ -7,8 +7,8 @@ authors:
   - family-names: Pakdamansavoji
     given-names: Sajjad
 license: MIT
-repository-code: "https://github.com/SajjadPSavoji/AutoPolish"
-url: "https://sajjadpsavoji.github.io/AutoPolish/"
+repository-code: "https://github.com/forall-labs/AutoPolish"
+url: "https://forall-labs.github.io/AutoPolish/"
 preferred-citation:
   type: article
   title: "AutoPolish: Improving Visual Aesthetics with Synthetic Audience Critique"

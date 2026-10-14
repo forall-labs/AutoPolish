@@ -17,7 +17,7 @@ bootstrap resamples of images or raters.
 ## Setup
 
 ```bash
-git clone https://github.com/SajjadPSavoji/AutoPolish && cd AutoPolish
+git clone https://github.com/forall-labs/AutoPolish && cd AutoPolish
 python -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt          # CPU: analysis, figures, data download
 ```

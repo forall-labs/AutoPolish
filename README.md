@@ -9,7 +9,7 @@ Independent Research · \*equal contribution
 
 <!-- Replace XXXX.XXXXX with the arXiv id once the paper is posted. -->
 [![arXiv](https://img.shields.io/badge/arXiv-XXXX.XXXXX-b31b1b.svg)](https://arxiv.org/abs/XXXX.XXXXX)
-[![Project page](https://img.shields.io/badge/Project-page-0072B2.svg)](https://sajjadpsavoji.github.io/AutoPolish/)
+[![Project page](https://img.shields.io/badge/Project-page-0072B2.svg)](https://forall-labs.github.io/AutoPolish/)
 [![Results on HF](https://img.shields.io/badge/%F0%9F%A4%97%20Results-savoji%2FAUTOPOLISH-ffcc4d.svg)](https://huggingface.co/datasets/savoji/AUTOPOLISH)
 [![License: MIT](https://img.shields.io/badge/License-MIT-lightgray.svg)](LICENSE)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10%2B-3776AB.svg)](https://www.python.org/)
@@ -57,7 +57,7 @@ scores higher and still resembles the original. Nothing is trained.
 ## Installation
 
 ```bash
-git clone https://github.com/SajjadPSavoji/AutoPolish && cd AutoPolish
+git clone https://github.com/forall-labs/AutoPolish && cd AutoPolish
 python -m venv .venv && source .venv/bin/activate
 
 pip install -r requirements.txt     # analysis, figures and data download (CPU)

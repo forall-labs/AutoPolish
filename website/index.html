@@ -4,6 +4,14 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>AutoPolish</title>
+<script>
+  // Light is the default; the toggle stores the visitor's choice.
+  (function () {
+    var saved = null;
+    try { saved = localStorage.getItem("autopolish-theme"); } catch (e) {}
+    document.documentElement.setAttribute("data-theme", saved === "dark" ? "dark" : "light");
+  })();
+</script>
 <meta name="description" content="AutoPolish replaces the person guiding each round of image editing with a synthetic audience: many copies of one vision-language model, each reacting as a different viewer.">
 <meta property="og:title" content="AutoPolish: Improving Visual Aesthetics with Synthetic Audience Critique">
 <meta property="og:description" content="A synthetic audience of simulated viewers critiques an image, and an editing loop keeps an edit only when an independent scorer rates it higher.">
@@ -44,15 +52,6 @@
   --step-4: clamp(3.2rem, 9vw, 6.25rem);
   color-scheme: light;
 }
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    --paper: #0e1219; --surface: #151b25; --ink: #e8ecf3; --muted: #9aa4b5; --rule: #273042;
-    --navy: #4aa8e0; --navy-ink: #7cc0ea; --magenta: #e09ac2; --olive: #c9bd3a; --yellow: #f0e442;
-    --gray: #a9a9a4; --wash: #16283a; --plate: #f4f6f9;
-    --shadow: 0 1px 2px rgba(0, 0, 0, .4), 0 8px 24px rgba(0, 0, 0, .35);
-    color-scheme: dark;
-  }
-}
 :root[data-theme="dark"] {
   --paper: #0e1219; --surface: #151b25; --ink: #e8ecf3; --muted: #9aa4b5; --rule: #273042;
   --navy: #4aa8e0; --navy-ink: #7cc0ea; --magenta: #e09ac2; --olive: #c9bd3a; --yellow: #f0e442;
@@ -89,6 +88,17 @@ section { padding-block: clamp(3rem, 7vw, 5.5rem); }
 section + section { border-top: 1px solid var(--rule); }
 
 /* ---------- header ---------- */
+.topbar { display: flex; justify-content: flex-end; margin-bottom: clamp(1rem, 4vw, 2rem); }
+.theme-toggle {
+  appearance: none; display: inline-flex; align-items: center; gap: .45rem; cursor: pointer;
+  font: 500 var(--step--1)/1 var(--mono); padding: .5rem .85rem; border-radius: 999px;
+  border: 1px solid var(--rule); background: var(--surface); color: var(--ink);
+}
+.theme-toggle:hover { border-color: var(--navy); color: var(--navy-ink); }
+.theme-toggle svg { width: 1.1em; height: 1.1em; }
+.theme-toggle .sun { display: none; }
+:root[data-theme="dark"] .theme-toggle .sun { display: inline; }
+:root[data-theme="dark"] .theme-toggle .moon { display: none; }
 .masthead { padding-block: clamp(2.5rem, 7vw, 5rem) 2rem; }
 .masthead h1 {
   font-size: var(--step-4); font-weight: 800; letter-spacing: -.045em; line-height: .92;
@@ -286,6 +296,13 @@ footer p { margin: 0 0 .5rem; max-width: 80ch; }
 <body>
 
 <header class="masthead frame">
+  <div class="topbar">
+    <button class="theme-toggle" id="theme-toggle" type="button" aria-pressed="false">
+      <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4 8 8 0 1 0 20 14.5z"/></svg>
+      <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+      <span>Dark mode</span>
+    </button>
+  </div>
   <h1>Auto<span class="polish">Polish</span></h1>
   <p class="subtitle">Improving Visual Aesthetics with Synthetic Audience Critique</p>
   <div class="byline">
@@ -297,7 +314,7 @@ footer p { margin: 0 0 .5rem; max-width: 80ch; }
     <a class="btn" href="#" aria-disabled="true">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M7 3h7l5 5v13H7z"/><path d="M14 3v5h5M10 13h6M10 17h6"/></svg>
       Paper <em>soon on arXiv</em></a>
-    <a class="btn" href="https://github.com/SajjadPSavoji/AutoPolish">
+    <a class="btn" href="https://github.com/forall-labs/AutoPolish">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m8 7-5 5 5 5M16 7l5 5-5 5M14 4l-4 16"/></svg>
       Code</a>
     <a class="btn" href="https://huggingface.co/datasets/savoji/AUTOPOLISH">
@@ -479,6 +496,20 @@ footer p { margin: 0 0 .5rem; max-width: 80ch; }
   const GROUP_COLORS = ["var(--navy)", "var(--magenta)", "var(--olive)", "var(--gray)"];
   const CRITICS = [["static", "static string"], ["blind", "blind VLM"], ["society", "AutoPolish"], ["reward_only", "reward-only"]];
   const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  // ---------- theme ----------
+  const root = document.documentElement, toggle = $("#theme-toggle");
+  function showTheme(theme) {
+    toggle.setAttribute("aria-pressed", String(theme === "dark"));
+    toggle.querySelector("span").textContent = theme === "dark" ? "Light mode" : "Dark mode";
+  }
+  toggle.addEventListener("click", () => {
+    const next = root.getAttribute("data-theme") === "dark" ? "light" : "dark";
+    root.setAttribute("data-theme", next);
+    try { localStorage.setItem("autopolish-theme", next); } catch (e) {}
+    showTheme(next);
+  });
+  showTheme(root.getAttribute("data-theme") === "dark" ? "dark" : "light");
 
   // ---------- round viewer ----------
   fetch("static/rounds.json").then((r) => r.json()).then((data) => {
