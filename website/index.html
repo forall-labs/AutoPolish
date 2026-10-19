@@ -306,10 +306,7 @@ tr.ref td:first-child { font-style: italic; font-weight: 500; }
 .cell.ours figcaption b, .cell.ours figcaption span { color: var(--accent-deep); font-weight: 600; }
 .gnote { margin: var(--s-3) 0 0; max-width: 70ch; }
 
-/* --- Prose lists and citation --- */
-.list { padding-left: 1.3em; margin: 0; max-width: var(--prose); }
-.list li { margin-bottom: .6em; color: var(--text-soft); }
-.list li::marker { color: var(--accent); }
+/* --- Citation --- */
 .bib { position: relative; }
 .bib pre { margin: 0; overflow-x: auto; padding: var(--s-3); border-radius: var(--radius); background: var(--bg-raised); border: 1px solid var(--line); font: .86rem/1.65 var(--mono); color: var(--text); }
 .bib .btn { position: absolute; top: .75rem; right: .75rem; }
@@ -548,23 +545,7 @@ tr.ref td:first-child { font-style: italic; font-weight: 500; }
   </div>
 </section>
 
-<section class="section sunk" id="limits" aria-labelledby="limits-title">
-  <div class="wrap">
-    <div class="section-head">
-      <p class="eyebrow">Limitations</p>
-      <h2 id="limits-title">What these results do not show.</h2>
-    </div>
-    <ul class="list">
-      <li>Every result comes from one frozen model, Qwen2-VL-7B-Instruct. Whether the audience is a property of the method or of this model is untested.</li>
-      <li>Editing gains are measured by an automatic aesthetic scorer, not by people. The next step is to ask real viewers whether they prefer the edits.</li>
-      <li>AutoPolish improves fewer images than a fixed instruction (69% against 84%), although its gains on the images it improves are larger.</li>
-      <li>The audience reproduces groups, not individuals: its profile explains at most 4% of one person's taste.</li>
-      <li>The model is close to fair on age, gender and experience but not on where the viewer comes from, with a calibration gap of 0.50 for nationality on LAPIS.</li>
-    </ul>
-  </div>
-</section>
-
-<section class="section" id="citation" aria-labelledby="citation-title">
+<section class="section sunk" id="citation" aria-labelledby="citation-title">
   <div class="wrap">
     <div class="section-head">
       <p class="eyebrow">Citation</p>
